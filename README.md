@@ -16,3 +16,4 @@ npm i zustand
 npm i -D vitest jsdom @testing-library/react @testing-library/jest-dom
 
 npm i --save-dev @types/jest
+npm install --save-dev --save-exact prettier

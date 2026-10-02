@@ -67,7 +67,7 @@ export const useAuthStore = create<AuthState>()(
 
         const user: User = {
           id: crypto.randomUUID(),
-          name: data.fullName.trim(),
+          fullName: data.fullName.trim(),
           email,
           passwordHash: hash,
           passwordSalt: salt,

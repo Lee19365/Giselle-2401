@@ -13,6 +13,5 @@ app.use(express.json());
 
 // Define una ruta GET en /health; _req lleva guion bajo porque no la usamos
 app.get("/health", (_req, res) => {
-  
   res.json({ status: "ok" });
 });

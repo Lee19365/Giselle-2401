@@ -1,5 +1,3 @@
-
-
 import { app } from "./app";
 
 // Toma el puerto de la variable de entorno PORT; si no existe, usa 3001

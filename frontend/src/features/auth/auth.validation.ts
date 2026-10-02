@@ -16,7 +16,7 @@ export interface ValidationErrors {
 //Correo: formato válido
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Contraseña: mínimo 8 caracteres, al menos una letra y un número
-const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+const PASSWORD_REGEX = /^(?=.*\p{L})(?=.*\d).{8,}$/u;
 
 export function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();

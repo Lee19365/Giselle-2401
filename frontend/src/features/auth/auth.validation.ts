@@ -39,6 +39,7 @@ export function validateRegister(data: RegisterData): ValidationErrors {
     errors.password =
       "La contraseña debe tener al menos 8 caracteres, incluyendo una letra y un número.";
   }
+  // Confirmar contraseña
   if (data.confirmPassword !== data.password) {
     errors.confirmPassword = "Las contraseñas no coinciden.";
   }

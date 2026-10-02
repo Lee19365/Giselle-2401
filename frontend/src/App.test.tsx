@@ -7,7 +7,9 @@ describe("App", () => {
     // Se reemplaza fetch por una versión falsa para que la prueba no dependa de que el backend esté encendido
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({ json: () => Promise.resolve({ status: "ok" }) })
+      vi
+        .fn()
+        .mockResolvedValue({ json: () => Promise.resolve({ status: "ok" }) }),
     );
   });
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { RegisterForm } from "./features/auth/RegisterForm";
 
 export default function App() {
   const [status, setStatus] = useState("cargando...");
@@ -12,5 +13,9 @@ export default function App() {
       .catch(() => setStatus("sin conexión"));
   }, []);
 
-  return <p>API: {status}</p>;
+  return <main>
+      <RegisterForm />
+      <p>API: {status}</p>
+    </main>
+     ;
 }

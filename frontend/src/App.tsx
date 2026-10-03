@@ -1,21 +1,54 @@
-import { useEffect, useState } from "react";
-import { RegisterForm } from "./features/auth/RegisterForm";
+
+import { Navigate, Route, Routes } from "react-router-dom";
+import { LoginPage } from "./features/auth/LoginPage";
+import { RegisterPage } from "./features/auth/RegisterPage";
+import { DashboardPage } from "./features/dashboard/DashboardPage";
+import { PublicRoute } from "./shared/PublicRoute";
+import { ProtectedRoute } from "./shared/ProtectedRoute";
 
 export default function App() {
-  const [status, setStatus] = useState("cargando...");
+  return (
+    <Routes>
+      {/* Rutas públicas */}
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <LoginPage />
+          </PublicRoute>
+        }
+      />
 
-  // Arreglo de dependencias vacío: el chequeo se hace una sola vez, al montar el componente
-  useEffect(() => {
-    fetch("/api/health")
-      .then((res) => res.json())
-      .then((data) => setStatus(data.status))
-      // Si el backend está apagado o hay un fallo de red, fetch rechaza la promesa y caemos aquí
-      .catch(() => setStatus("sin conexión"));
-  }, []);
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <RegisterPage />
+          </PublicRoute>
+        }
+      />
 
-  return <main>
-      <RegisterForm />
-      <p>API: {status}</p>
-    </main>
-     ;
+      {/* Ruta protegida */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Ruta principal */}
+      <Route
+        path="/"
+        element={<Navigate to="/dashboard" replace />}
+      />
+
+      {/* Cualquier ruta desconocida */}
+      <Route
+        path="*"
+        element={<Navigate to="/dashboard" replace />}
+      />
+    </Routes>
+  );
 }

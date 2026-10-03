@@ -1,0 +1,13 @@
+/* src/shared/components/LoadingScreen.css */
+
+.loading-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--bg);
+  color: var(--text-muted);
+
+  font-family: sans-serif;
+}

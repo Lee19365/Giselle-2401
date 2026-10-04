@@ -24,3 +24,5 @@ dist
 *.njsproj
 *.sln
 *.sw?
+node_modules/
+dist/

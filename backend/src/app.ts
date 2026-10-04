@@ -1,17 +1,27 @@
-// Importa Express, el framework que maneja las rutas y peticiones HTTP
+
 import express from "express";
-// Importa CORS, el middleware que permite que otro origen (el frontend) llame a esta API
 import cors from "cors";
 
-// Crea la aplicación de Express y la exporta para usarla en server.ts y en las pruebas
+import { snailpayRouter } from "./snailpay/snailpay.routes";
+import { errorHandler } from "./shared/errorHandler";
+
+// Crea la aplicación de Express
 export const app = express();
 
-// Permite peticiones solo desde el frontend de Vite (puerto 5173); el resto de orígenes se bloquea
+// Permite peticiones desde el frontend de Vite
 app.use(cors({ origin: "http://localhost:5173" }));
 
+// Permite recibir JSON en las peticiones
 app.use(express.json());
 
-// Define una ruta GET en /health; _req lleva guion bajo porque no la usamos
+// Ruta de comprobación
 app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
+
+// Rutas de SnailPay
+app.use("/snailpay", snailpayRouter);
+
+// Middleware global de errores.
+// Debe estar DESPUÉS de las rutas.
+app.use(errorHandler);

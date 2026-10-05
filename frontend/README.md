@@ -1,73 +1,84 @@
-# React + TypeScript + Vite
+# Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SPA de React 19 + TypeScript que se comunica con la API de SnailPay del backend.
 
-Currently, two official plugins are available:
+> La documentación del proyecto (estructura, instalación, ejecución de ambos paquetes,
+> pruebas y contrato de SnailPay) está en el
+> [README de la raíz](../README.md). Este archivo solo describe el paquete `frontend/`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Scripts
 
-## React Compiler
+| Comando                | Qué hace                                   |
+| ---------------------- | ------------------------------------------ |
+| `npm run dev`          | Servidor de desarrollo de Vite (puerto 5173) |
+| `npm run build`        | Typecheck (`tsc -b`) y build de producción  |
+| `npm run preview`      | Sirve el build de producción               |
+| `npm run lint`         | ESLint                                     |
+| `npm test`             | Corre las pruebas con Vitest (138 pruebas) |
+| `npm run format`       | Reformatea `src/` con Prettier             |
+| `npm run format:check` | Verifica el formato sin escribir           |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Orden de verificación recomendado: `npm run lint`, `npm run build`, `npm test`.
 
-## Expanding the ESLint configuration
+## Proxy hacia el backend
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+El cliente llama a `POST /api/snailpay/payments`. Vite lo reenvía a
+`http://localhost:3001` quitando el prefijo `/api`, así que la ruta que atiende el
+backend es `POST /snailpay/payments`. El CORS del backend está fijado a
+`http://localhost:5173`, por lo que el frontend debe usar el puerto por defecto de Vite.
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+Para levantar la aplicación hay que tener el backend corriendo en otra terminal
+(`cd backend && npm run dev`).
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Estructura de `src/`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```text
+src/
+  App.tsx                 Rutas: /login, /register, /dashboard y redirecciones
+  shared/
+    ProtectedRoute.tsx    Solo con sesión; espera la hidratación del store
+    PublicRoute.tsx       Redirige al dashboard si ya hay sesión
+    LoadingScreen.tsx
+  features/
+    auth/                 Formularios, store, validación y hash de contraseñas
+    dashboard/            Dashboard con saldo, recarga y gráficas
+    graficas/             Gráficas en SVG/CSS y datos simulados de carreras
+    wallet/               Cliente de SnailPay, store de saldo y formulario
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## Pruebas
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+| Archivo                          | Qué cubre                                                   |
+| -------------------------------- | ----------------------------------------------------------- |
+| `auth.validation.test.ts`         | Reglas del formulario de registro                           |
+| `password.test.ts`               | PBKDF2, salt, verificación y comparación en tiempo constante |
+| `auth.store.test.ts`             | Registro, login, logout, persistencia y doble envío         |
+| `App.test.tsx`                   | Rutas protegidas y públicas                                 |
+| `topUpForm.validation.test.ts`   | Validación del formulario de recarga y traducción de errores |
+| `snailpayClient.test.ts`         | Contrato, códigos HTTP, timeout y error de red              |
+| `wallet.store.test.ts`           | Saldo, persistencia y bloqueo de doble envío                |
+| `raceData.test.ts`               | Coherencia de los datos simulados de las gráficas           |
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+`password.test.ts` corre en entorno Node y `auth.store.test.ts` simula el módulo de
+contraseñas porque PBKDF2 a 600 000 iteraciones es demasiado lento en jsdom.
+
+Para correr una parte concreta:
+
+```bash
+npx vitest run src/features/wallet
 ```
+
+## Convenciones
+
+- Comentarios, textos de interfaz y mensajes de commit en **español**; identificadores
+  en inglés.
+- La UI nunca ve códigos HTTP: `snailpayClient.ts` devuelve un resultado discriminado
+  con seis casos y los formularios leen `result.kind`.
+- Solo un resultado `approved` modifica el saldo. El store usa una guarda síncrona para
+  evitar el doble envío, redondea el dinero a dos decimales y quita espacios y guiones
+  del número de tarjeta antes de enviarlo.
+- `import type` para imports de solo tipos, y ninguna variable o parámetro sin usar.
+- Antes de reformatear, revisa `git status`: `npm run format` toca todo `src/`.
+
+Las convenciones completas del repositorio están en
+[AGENTS.md](../AGENTS.md).

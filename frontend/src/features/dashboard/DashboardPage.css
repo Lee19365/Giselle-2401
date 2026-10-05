@@ -178,3 +178,197 @@
   color: var(--danger);
   border-color: var(--danger);
 }
+
+/* --- Gráficas de victorias --- */
+
+.charts-title {
+  margin: 0 0 12px 0;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+/* Recarga a la izquierda, gráficas a la derecha; se apilan en pantallas estrechas. */
+.dashboard-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.dashboard-row .topup-section {
+  flex: 0 1 420px;
+  width: 100%;
+}
+
+.charts-section {
+  flex: 1 1 560px;
+  min-width: 0;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.chart-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.chart {
+  margin: 0;
+}
+
+.chart figcaption {
+  margin-bottom: 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Paleta de 6 colores; cada gráfica usa currentColor a partir de ella. */
+.chart-color-0 { color: #4f9dff; }
+.chart-color-1 { color: #f5a524; }
+.chart-color-2 { color: #3ecf8e; }
+.chart-color-3 { color: #c084fc; }
+.chart-color-4 { color: #f472b6; }
+.chart-color-5 { color: #94a3b8; }
+
+/* Barras horizontales */
+.bar-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 72px 1fr 28px;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.875rem;
+}
+
+.bar-name {
+  color: var(--text);
+}
+
+.bar-track {
+  display: block;
+  height: 12px;
+  background-color: var(--bg);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  display: block;
+  height: 100%;
+  background-color: currentColor;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.bar-value {
+  text-align: right;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Donut */
+.donut-svg {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto 16px;
+}
+
+.donut-track {
+  stroke: var(--border);
+}
+
+.donut-total {
+  fill: var(--text);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.donut-label {
+  fill: var(--text-muted);
+  font-size: 9px;
+}
+
+.chart-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--text);
+}
+
+.chart-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background-color: currentColor;
+  flex-shrink: 0;
+}
+
+
+/* Texto explicativo de las estadísticas */
+.charts-note {
+  margin-top: 24px;
+  padding: 16px 24px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.charts-note h3 {
+  margin: 0 0 8px 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.charts-note p {
+  margin: 0 0 8px 0;
+}
+
+.charts-note p:last-child {
+  margin-bottom: 0;
+}
+
+.charts-note ul {
+  margin: 0 0 8px 0;
+  padding-left: 20px;
+}
+
+.charts-note strong {
+  color: var(--text);
+}
+
+/* Colores del donut de apuestas */
+.bet-won { color: var(--success); }
+.bet-lost { color: var(--danger); }

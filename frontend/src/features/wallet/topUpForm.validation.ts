@@ -46,7 +46,8 @@ export function validateTopUpForm(values: TopUpFormValues): TopUpFormErrors {
 
   // Igual que el backend: solo se valida el formato, no la vigencia.
   if (!EXPIRATION_DATE_REGEX.test(values.expirationDate.trim())) {
-    errors.expirationDate = "La fecha de vencimiento debe tener el formato MM/YY.";
+    errors.expirationDate =
+      "La fecha de vencimiento debe tener el formato MM/YY.";
   }
 
   if (!CVV_REGEX.test(values.cvv.trim())) {
@@ -86,7 +87,7 @@ const SERVER_FIELD_MAP = new Map<string, keyof TopUpFormValues>([
 // Los campos sin equivalente en el formulario (payer_id, payer_email) se
 // ignoran: el usuario no puede corregirlos, y los cubre el mensaje general.
 export function mapServerErrors(
-  fieldErrors: Record<string, string>
+  fieldErrors: Record<string, string>,
 ): TopUpFormErrors {
   const errors: TopUpFormErrors = {};
 

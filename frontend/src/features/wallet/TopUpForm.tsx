@@ -2,7 +2,11 @@ import { useState } from "react";
 import type { FormEvent, InputHTMLAttributes } from "react";
 import { useAuthStore } from "../auth/authStore";
 import { useWalletStore } from "./wallet.store";
-import { mapServerErrors, parseAmount, validateTopUpForm } from "./topUpForm.validation";
+import {
+  mapServerErrors,
+  parseAmount,
+  validateTopUpForm,
+} from "./topUpForm.validation";
 import type { TopUpFormErrors, TopUpFormValues } from "./topUpForm.validation";
 
 interface Feedback {
@@ -10,8 +14,10 @@ interface Feedback {
   text: string;
 }
 
-interface TextFieldProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "name" | "value" | "onChange"> {
+interface TextFieldProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "name" | "value" | "onChange"
+> {
   label: string;
   name: keyof TopUpFormValues;
   value: string;

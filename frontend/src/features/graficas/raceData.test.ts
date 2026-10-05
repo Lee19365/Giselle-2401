@@ -30,7 +30,9 @@ describe("datos simulados de las carreras", () => {
   it("debe devolver un elemento por caracol, en su orden y sin victorias negativas", () => {
     const wins = getWinsBySnail();
 
-    expect(wins.map((item) => item.id)).toEqual(SNAILS.map((snail) => snail.id));
+    expect(wins.map((item) => item.id)).toEqual(
+      SNAILS.map((snail) => snail.id),
+    );
     for (const item of wins) {
       expect(Number.isInteger(item.wins)).toBe(true);
       expect(item.wins).toBeGreaterThanOrEqual(0);

@@ -7,8 +7,7 @@ import type { PaymentRequest } from "./wallet.types";
 // Resultado de topUp: lo que devuelve el cliente, más el caso de que ya haya
 // otra recarga en curso. La pantalla solo necesita `kind` y `message`.
 export type TopUpResult =
-  | PaymentResult
-  | { kind: "in-progress"; message: string };
+  PaymentResult | { kind: "in-progress"; message: string };
 
 interface WalletState {
   // Persistidos
@@ -20,7 +19,8 @@ interface WalletState {
   topUp: (data: PaymentRequest) => Promise<TopUpResult>;
 }
 
-const IN_PROGRESS_MESSAGE = "Ya hay una recarga en curso. Espera a que termine.";
+const IN_PROGRESS_MESSAGE =
+  "Ya hay una recarga en curso. Espera a que termine.";
 
 // Dinero: el contrato trabaja en unidades con 2 decimales, así que se redondea
 // a 2 decimales al sumar. Evita 0.1 + 0.2 = 0.30000000000000004.
@@ -65,7 +65,7 @@ export const useWalletStore = create<WalletState>()(
             set((state) => ({
               balance: addMoney(
                 state.balance,
-                result.payment.transaction_amount
+                result.payment.transaction_amount,
               ),
               cardNumber: request.card_number,
               cvv: request.cvv,
@@ -94,6 +94,6 @@ export const useWalletStore = create<WalletState>()(
         cardNumber: state.cardNumber,
         cvv: state.cvv,
       }),
-    }
-  )
+    },
+  ),
 );

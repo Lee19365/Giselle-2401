@@ -37,9 +37,7 @@ export function LoginPage() {
       <div className="auth-card">
         <h1 className="auth-title">Iniciar Sesión</h1>
 
-        <p className="auth-subtitle">
-          Ingresa tus credenciales para acceder
-        </p>
+        <p className="auth-subtitle">Ingresa tus credenciales para acceder</p>
 
         {formError && (
           <div className="error-message" role="alert">
@@ -47,11 +45,7 @@ export function LoginPage() {
           </div>
         )}
 
-        <form
-          onSubmit={handleSubmit}
-          className="auth-form"
-          noValidate
-        >
+        <form onSubmit={handleSubmit} className="auth-form" noValidate>
           <div className="form-group">
             <label htmlFor="email">Correo electrónico</label>
 
@@ -80,18 +74,13 @@ export function LoginPage() {
             />
           </div>
 
-          <button
-            type="submit"
-            className="auth-button"
-            disabled={isSubmitting}
-          >
+          <button type="submit" className="auth-button" disabled={isSubmitting}>
             {isSubmitting ? "Entrando..." : "Entrar"}
           </button>
         </form>
 
         <div className="auth-footer">
-          ¿No tienes una cuenta?{" "}
-          <Link to="/register">Regístrate aquí</Link>
+          ¿No tienes una cuenta? <Link to="/register">Regístrate aquí</Link>
         </div>
       </div>
     </div>

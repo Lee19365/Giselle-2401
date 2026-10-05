@@ -97,7 +97,7 @@ function isPaymentResponse(data: unknown): data is PaymentResponse {
 // una excepción dentro de createPayment: simplemente no coincidirá.
 function matchesRequest(
   payment: PaymentResponse,
-  body: PaymentRequest
+  body: PaymentRequest,
 ): boolean {
   return (
     payment.transaction_amount === body.amount &&
@@ -148,7 +148,7 @@ function invalidResponseResult(): PaymentResult {
 function interpretResponse(
   httpStatus: number,
   data: unknown,
-  body: PaymentRequest
+  body: PaymentRequest,
 ): PaymentResult {
   if (!isPaymentResponse(data)) {
     return invalidResponseResult();
@@ -209,7 +209,7 @@ function interpretResponse(
 
 export async function createPayment(
   body: PaymentRequest,
-  { timeoutMs = DEFAULT_TIMEOUT_MS }: { timeoutMs?: number } = {}
+  { timeoutMs = DEFAULT_TIMEOUT_MS }: { timeoutMs?: number } = {},
 ): Promise<PaymentResult> {
   const controller = new AbortController();
   // Nada más aborta este controlador, así que signal.aborted significa timeout.

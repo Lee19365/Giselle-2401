@@ -1,15 +1,15 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { User, Session } from './auth.types';
-import { createPasswordHash, verifyPassword } from './password';
-import { 
-  normalizeEmail, 
-  validateRegister, 
-  type RegisterData, 
-  type ValidationErrors 
-} from './auth.validation';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { User, Session } from "./auth.types";
+import { createPasswordHash, verifyPassword } from "./password";
+import {
+  normalizeEmail,
+  validateRegister,
+  type RegisterData,
+  type ValidationErrors,
+} from "./auth.validation";
 
-export type AuthResult = 
+export type AuthResult =
   | { success: true }
   | { success: false; errors: ValidationErrors & { form?: string } };
 
@@ -48,9 +48,11 @@ export const useAuthStore = create<AuthState>()(
 
         // 2. Primera verificación de usuario existente (antes del hash asíncrono)
         if (get().user) {
-          return { 
-            success: false, 
-            errors: { form: 'Ya existe una cuenta registrada en esta aplicación.' } 
+          return {
+            success: false,
+            errors: {
+              form: "Ya existe una cuenta registrada en esta aplicación.",
+            },
           };
         }
 
@@ -59,9 +61,11 @@ export const useAuthStore = create<AuthState>()(
 
         // 3. Segunda verificación contra doble envío/clic (race condition post-await)
         if (get().user) {
-          return { 
-            success: false, 
-            errors: { form: 'Ya existe una cuenta registrada en esta aplicación.' } 
+          return {
+            success: false,
+            errors: {
+              form: "Ya existe una cuenta registrada en esta aplicación.",
+            },
           };
         }
 
@@ -92,20 +96,20 @@ export const useAuthStore = create<AuthState>()(
         if (!currentUser || currentUser.email !== normalizedEmail) {
           return {
             success: false,
-            errors: { form: 'Credenciales incorrectas.' },
+            errors: { form: "Credenciales incorrectas." },
           };
         }
 
         const isValidPassword = await verifyPassword(
           password,
           currentUser.passwordHash,
-          currentUser.passwordSalt
+          currentUser.passwordSalt,
         );
 
         if (!isValidPassword) {
           return {
             success: false,
-            errors: { form: 'Credenciales incorrectas.' },
+            errors: { form: "Credenciales incorrectas." },
           };
         }
 
@@ -125,7 +129,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
       partialize: (state) => ({
         user: state.user,
         session: state.session,
@@ -133,6 +137,6 @@ export const useAuthStore = create<AuthState>()(
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },
-    }
-  )
+    },
+  ),
 );

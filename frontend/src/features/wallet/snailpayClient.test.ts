@@ -15,7 +15,7 @@ const requestBody: PaymentRequest = {
 
 // Respuesta válida y coherente con requestBody; cada prueba cambia lo que necesita.
 function paymentResponse(
-  overrides: Partial<PaymentResponse> = {}
+  overrides: Partial<PaymentResponse> = {},
 ): PaymentResponse {
   return {
     id: "e3f19f8e-c2fe-4014-b515-f9a25347e57e",
@@ -59,7 +59,7 @@ function mockFetchResponse(status: number, body: unknown) {
 function stubFetchThatFails() {
   vi.stubGlobal(
     "fetch",
-    vi.fn().mockRejectedValue(new TypeError("Failed to fetch"))
+    vi.fn().mockRejectedValue(new TypeError("Failed to fetch")),
   );
 }
 
@@ -71,7 +71,7 @@ function stubFetchWithInvalidJson() {
       json: async () => {
         throw new SyntaxError("Unexpected token < in JSON");
       },
-    })
+    }),
   );
 }
 
@@ -84,10 +84,10 @@ function stubFetchThatNeverResponds() {
       (_url: string, init?: RequestInit) =>
         new Promise((_resolve, reject) => {
           init?.signal?.addEventListener("abort", () =>
-            reject(new DOMException("Aborted", "AbortError"))
+            reject(new DOMException("Aborted", "AbortError")),
           );
-        })
-    )
+        }),
+    ),
   );
 }
 
@@ -101,18 +101,18 @@ function stubFetchWithStalledBody() {
         json: () =>
           new Promise((_resolve, reject) => {
             init?.signal?.addEventListener("abort", () =>
-              reject(new DOMException("Aborted", "AbortError"))
+              reject(new DOMException("Aborted", "AbortError")),
             );
           }),
-      })
-    )
+      }),
+    ),
   );
 }
 
 // Comprueba el kind y devuelve el resultado ya acotado para leer sus campos.
 function expectKind<K extends PaymentResult["kind"]>(
   result: PaymentResult,
-  kind: K
+  kind: K,
 ): Extract<PaymentResult, { kind: K }> {
   expect(result.kind).toBe(kind);
   return result as Extract<PaymentResult, { kind: K }>;
@@ -181,7 +181,7 @@ describe("createPayment", () => {
       const result = await createPayment(requestBody);
 
       expect(result.kind).toBe("invalid-response");
-    }
+    },
   );
 
   it("debe devolver invalid-response si el 200 aprobado no trae authorization_code", async () => {
@@ -317,22 +317,34 @@ describe("createPayment", () => {
     ["un objeto vacío", {}],
     ["sin el campo cvv", omit(paymentResponse(), "cvv")],
     ["un status desconocido", { ...paymentResponse(), status: "pending" }],
-    ["un monto que no es número", { ...paymentResponse(), transaction_amount: "100" }],
-    ["un authorization_code de otro tipo", { ...paymentResponse(), authorization_code: 123 }],
-  ])("debe devolver invalid-response cuando el cuerpo es %s", async (_name, body) => {
-    mockFetchResponse(200, body);
+    [
+      "un monto que no es número",
+      { ...paymentResponse(), transaction_amount: "100" },
+    ],
+    [
+      "un authorization_code de otro tipo",
+      { ...paymentResponse(), authorization_code: 123 },
+    ],
+  ])(
+    "debe devolver invalid-response cuando el cuerpo es %s",
+    async (_name, body) => {
+      mockFetchResponse(200, body);
 
-    const result = await createPayment(requestBody);
+      const result = await createPayment(requestBody);
 
-    expect(result.kind).toBe("invalid-response");
-  });
+      expect(result.kind).toBe("invalid-response");
+    },
+  );
 
   // --- FALLOS DE RED Y CUERPO ---
 
   it("debe devolver network-error cuando fetch falla", async () => {
     stubFetchThatFails();
 
-    const result = expectKind(await createPayment(requestBody), "network-error");
+    const result = expectKind(
+      await createPayment(requestBody),
+      "network-error",
+    );
 
     expect(result.message).not.toBe("");
   });
@@ -377,7 +389,7 @@ describe("createPayment", () => {
       (result) => {
         settled = true;
         return result;
-      }
+      },
     );
 
     await vi.advanceTimersByTimeAsync(999);

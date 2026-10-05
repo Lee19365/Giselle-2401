@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link } from "react-router-dom";
@@ -59,9 +58,7 @@ export function RegisterPage() {
       <div className="auth-card">
         <h1 className="auth-title">Crear Cuenta</h1>
 
-        <p className="auth-subtitle">
-          Completa tus datos para registrarte
-        </p>
+        <p className="auth-subtitle">Completa tus datos para registrarte</p>
 
         {/* Error general del formulario */}
         {errors.form && (
@@ -70,11 +67,7 @@ export function RegisterPage() {
           </div>
         )}
 
-        <form
-          onSubmit={handleSubmit}
-          className="auth-form"
-          noValidate
-        >
+        <form onSubmit={handleSubmit} className="auth-form" noValidate>
           <div className="form-group">
             <label htmlFor="fullName">Nombre completo</label>
 
@@ -108,9 +101,7 @@ export function RegisterPage() {
               aria-invalid={!!errors.email}
             />
 
-            {errors.email && (
-              <p className="field-error">{errors.email}</p>
-            )}
+            {errors.email && <p className="field-error">{errors.email}</p>}
           </div>
 
           <div className="form-group">
@@ -133,9 +124,7 @@ export function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">
-              Confirmar contraseña
-            </label>
+            <label htmlFor="confirmPassword">Confirmar contraseña</label>
 
             <input
               id="confirmPassword"
@@ -153,21 +142,15 @@ export function RegisterPage() {
             )}
           </div>
 
-          <button
-            type="submit"
-            className="auth-button"
-            disabled={isSubmitting}
-          >
+          <button type="submit" className="auth-button" disabled={isSubmitting}>
             {isSubmitting ? "Registrando..." : "Registrar"}
           </button>
         </form>
 
         <div className="auth-footer">
-          ¿Ya tienes una cuenta?{" "}
-          <Link to="/login">Inicia sesión aquí</Link>
+          ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión aquí</Link>
         </div>
       </div>
     </div>
   );
 }
-

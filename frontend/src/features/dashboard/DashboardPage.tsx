@@ -76,9 +76,7 @@ export function DashboardPage() {
                 caracol elegido ganó esa carrera, y como perdida si no. El
                 número del centro es el total de apuestas.
               </li>
-              <li>
-                Un caracol sin victorias aparece con 0 en las barras.
-              </li>
+              <li>Un caracol sin victorias aparece con 0 en las barras.</li>
             </ul>
             <p>Los datos son simulados y se usan solo como demostración.</p>
           </div>

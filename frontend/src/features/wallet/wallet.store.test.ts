@@ -26,7 +26,7 @@ const INITIAL_STATE = {
 };
 
 function paymentResponse(
-  overrides: Partial<PaymentResponse> = {}
+  overrides: Partial<PaymentResponse> = {},
 ): PaymentResponse {
   return {
     id: "e3f19f8e-c2fe-4014-b515-f9a25347e57e",
@@ -120,16 +120,19 @@ describe("useWalletStore", () => {
     [0.1, 0.2, 0.3],
     [1.15, 2.3, 3.45],
     [100.5, 0.01, 100.51],
-  ])("debe sumar %s y %s sin errores de punto flotante", async (first, second, total) => {
-    createPaymentMock
-      .mockResolvedValueOnce(approvedResult(first))
-      .mockResolvedValueOnce(approvedResult(second));
+  ])(
+    "debe sumar %s y %s sin errores de punto flotante",
+    async (first, second, total) => {
+      createPaymentMock
+        .mockResolvedValueOnce(approvedResult(first))
+        .mockResolvedValueOnce(approvedResult(second));
 
-    await useWalletStore.getState().topUp({ ...requestBody, amount: first });
-    await useWalletStore.getState().topUp({ ...requestBody, amount: second });
+      await useWalletStore.getState().topUp({ ...requestBody, amount: first });
+      await useWalletStore.getState().topUp({ ...requestBody, amount: second });
 
-    expect(useWalletStore.getState().balance).toBe(total);
-  });
+      expect(useWalletStore.getState().balance).toBe(total);
+    },
+  );
 
   // --- RECARGAS NO APROBADAS ---
 
@@ -146,7 +149,7 @@ describe("useWalletStore", () => {
         cardNumber: "",
         cvv: "",
       });
-    }
+    },
   );
 
   // --- NÚMERO DE TARJETA ---
@@ -172,7 +175,7 @@ describe("useWalletStore", () => {
     createPaymentMock.mockReturnValueOnce(
       new Promise<PaymentResult>((resolve) => {
         resolveFirst = resolve;
-      })
+      }),
     );
 
     const first = useWalletStore.getState().topUp(requestBody);
@@ -207,7 +210,7 @@ describe("useWalletStore", () => {
     createPaymentMock.mockRejectedValueOnce(new Error("boom"));
 
     await expect(useWalletStore.getState().topUp(requestBody)).rejects.toThrow(
-      "boom"
+      "boom",
     );
 
     expect(useWalletStore.getState().isTopUpInProgress).toBe(false);

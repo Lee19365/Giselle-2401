@@ -54,9 +54,9 @@ describe("validateTopUpForm", () => {
   });
 
   it("debe aceptar el monto máximo", () => {
-    expect(
-      validateTopUpForm({ ...validValues, amount: "1000000" })
-    ).toEqual({});
+    expect(validateTopUpForm({ ...validValues, amount: "1000000" })).toEqual(
+      {},
+    );
   });
 
   it.each([
@@ -94,7 +94,13 @@ describe("validateTopUpForm", () => {
     });
 
     expect(Object.keys(errors).sort()).toEqual(
-      ["amount", "cardNumber", "cardholderName", "cvv", "expirationDate"].sort()
+      [
+        "amount",
+        "cardNumber",
+        "cardholderName",
+        "cvv",
+        "expirationDate",
+      ].sort(),
     );
   });
 });

@@ -1,4 +1,3 @@
-
 import { Navigate } from "react-router-dom";
 import type { ReactNode } from "react";
 import { useAuthStore } from "../features/auth/authStore";
@@ -27,4 +26,3 @@ export function PublicRoute({ children }: PublicRouteProps) {
   // No hay sesión, por lo que las rutas públicas pueden mostrarse.
   return <>{children}</>;
 }
-

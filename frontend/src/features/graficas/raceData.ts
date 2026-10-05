@@ -40,7 +40,7 @@ export const RACES: readonly Race[] = [
 // Cuenta las carreras ganadas por cada caracol, en el mismo orden que snails.
 export function getWinsBySnail(
   snails: readonly Snail[] = SNAILS,
-  races: readonly Race[] = RACES
+  races: readonly Race[] = RACES,
 ): SnailWins[] {
   return snails.map((snail) => ({
     id: snail.id,
@@ -79,10 +79,12 @@ export const BETS: readonly Bet[] = [
 
 export function getBetsSummary(
   bets: readonly Bet[] = BETS,
-  races: readonly Race[] = RACES
+  races: readonly Race[] = RACES,
 ): BetsSummary {
   const won = bets.filter((bet) =>
-    races.some((race) => race.id === bet.raceId && race.winnerId === bet.snailId)
+    races.some(
+      (race) => race.id === bet.raceId && race.winnerId === bet.snailId,
+    ),
   ).length;
 
   return { won, lost: bets.length - won };
